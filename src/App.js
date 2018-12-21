@@ -1,12 +1,17 @@
 import React from 'react'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import { MuiThemeProvider } from '@material-ui/core/styles'
-import Typography from '@material-ui/core/Typography'
 import { Provider } from 'react-redux'
 import { Route, Switch } from 'react-router-dom'
 import { ConnectedRouter } from 'connected-react-router'
 import theme from './theme'
 import store, { history } from './store'
+import Login from './components/Login'
+import PrivateRoute from './components/PrivateRoute'
+
+function Home() {
+  return <div>Secret</div>
+}
 
 function App() {
   return (
@@ -15,7 +20,8 @@ function App() {
         <MuiThemeProvider theme={theme}>
           <CssBaseline />
           <Switch>
-            <Route exact path="/" render={() => (<Typography variant="h1" align="center" gutterBottom>Kotei web app</Typography>)} />
+            <PrivateRoute exact path="/" component={Home} />
+            <Route exact path="/login" component={Login} />
             <Route render={() => (<div>404</div>)} />
           </Switch>  
         </MuiThemeProvider>
