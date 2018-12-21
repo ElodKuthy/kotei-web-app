@@ -1,0 +1,7 @@
+{
+    "Login": "Bejelentkezés",
+    "Email": "Email cím",
+    "Password": "Jelszó",
+    "auth/invalid-email": "Helytelen email cím formátum",
+    "auth/wrong-password": "Helytelen jelszó"
+}

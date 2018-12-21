@@ -12,6 +12,7 @@ import { connect } from 'react-redux'
 import { login } from '../actions'
 import { red } from '@material-ui/core/colors'
 import { Redirect } from 'react-router-dom'
+import { withNamespaces } from 'react-i18next'
 
 const styles = theme => ({
     main: {
@@ -71,8 +72,8 @@ class Login extends Component {
     login(email, password)
   }
 
-  render() {
-    const { classes, user, error, from } = this.props
+ render() {
+    const { t, classes, user, error, from } = this.props
     const { email, password } = this.state
 
     if (user) {
@@ -86,18 +87,18 @@ class Login extends Component {
             <LockIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Bejelentkezés
+            {t('Login')}
           </Typography>
           <form className={classes.form} noValidate>
             <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="email">Email cím</InputLabel>
+              <InputLabel htmlFor="email">{t('Email')}</InputLabel>
               <Input id="email" name="email" autoComplete="email" autoFocus value={email} onChange={this.onEmailChange} />
             </FormControl>
             <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="password">Jelszó</InputLabel>
+              <InputLabel htmlFor="password">{t('Password')}</InputLabel>
               <Input name="password" type="password" id="password" autoComplete="current-password" value={password} onChange={this.onPasswordChange} />
             </FormControl>
-            { error && <Typography className={classes.error}>{error}</Typography> }
+            { error && <Typography className={classes.error}>{t(error)}</Typography> }
             <Button
               type="submit"
               fullWidth
@@ -107,7 +108,7 @@ class Login extends Component {
               onClick={this.onSubmit}
               disabled={!email || !password}
             >
-              Bejelentkezés
+              {t('Login')}
             </Button>
           </form>
         </Paper>
@@ -118,7 +119,7 @@ class Login extends Component {
 
 const mapStateToProps = state => ({
   user: state.auth.user,
-  error: state.auth.error && state.auth.error.message,
+  error: state.auth.error && state.auth.error.code,
   from: state.router.location.state ? state.router.location.state.from : { pathname: '/' }
 })
 
@@ -126,4 +127,4 @@ const mapDispatchToProps =  {
   login,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Login))
+export default withNamespaces()(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Login)))
