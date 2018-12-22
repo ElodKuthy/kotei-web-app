@@ -11,6 +11,8 @@ import PrivateRoute from './components/PrivateRoute'
 import FirebaseObserver from './components/FirebaseObserver'
 import TopAppBar from './components/TopAppBar'
 import MyProfile from './components/MyProfile'
+import LeftMenu from './components/LeftMenu'
+import ContentContainer from './components/ContentContainer'
 
 const Empty = () => <div />
 
@@ -22,12 +24,15 @@ function App() {
           <CssBaseline />
           <FirebaseObserver />
           <TopAppBar />
-          <Switch>
-            <PrivateRoute exact path="/" component={Empty} />
-            <PrivateRoute exact path="/profile" component={MyProfile} />
-            <Route exact path="/login" component={Login} />
-            <Route render={() => (<div>404</div>)} />
-          </Switch>  
+          <LeftMenu />
+          <ContentContainer>
+            <Switch>
+              <PrivateRoute exact path="/" component={Empty} />
+              <PrivateRoute exact path="/profile" component={MyProfile} />
+              <Route exact path="/login" component={Login} />
+              <Route render={() => (<div>404</div>)} />
+            </Switch> 
+          </ContentContainer> 
         </MuiThemeProvider>
       </ConnectedRouter>
     </Provider>

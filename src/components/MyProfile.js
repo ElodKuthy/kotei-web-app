@@ -9,12 +9,7 @@ import { fetchCurrentUserData } from '../actions'
 
 const styles = theme => ({
     root: {
-        margin: theme.spacing.unit * 3,
-        [theme.breakpoints.up('lg')]: {
-            width: 1200,
-            marginLeft: 'auto',
-            marginRight: 'auto',
-        },
+        maxWidth: 1280,
     },
     paper: {
         padding: theme.spacing.unit * 2,
@@ -34,17 +29,15 @@ class MyProfile extends Component {
             return null
         }
          
-        return (
-            <div className={classes.root}>
-                <Grid container justify="center" spacing={24}>
-                    <Grid item xs={12} sm={9} md={6}>
-                        <Paper className={classes.paper}>
-                            <Typography variant="body1" gutterBottom>{t('Name')}: {userData.name}</Typography>
-                            <Typography variant="body1" gutterBottom>{t('Email')}: {user.email}</Typography>
-                        </Paper>
-                    </Grid>
+        return (           
+            <Grid className={classes.root} container justify="center" spacing={24}>
+                <Grid item xs={12} sm={9} md={6}>
+                    <Paper className={classes.paper}>
+                        <Typography variant="body1" gutterBottom>{t('Name')}: {userData.name}</Typography>
+                        <Typography variant="body1" gutterBottom>{t('Email')}: {user.email}</Typography>
+                    </Paper>
                 </Grid>
-            </div>
+            </Grid>           
         )
     }
 }
