@@ -8,6 +8,7 @@ import theme from './theme'
 import store, { history } from './store'
 import Login from './components/Login'
 import PrivateRoute from './components/PrivateRoute'
+import FirebaseObserver from './components/FirebaseObserver'
 
 function Home() {
   return <div>Secret</div>
@@ -19,6 +20,7 @@ function App() {
     <ConnectedRouter history={history}>
         <MuiThemeProvider theme={theme}>
           <CssBaseline />
+          <FirebaseObserver />
           <Switch>
             <PrivateRoute exact path="/" component={Home} />
             <Route exact path="/login" component={Login} />
