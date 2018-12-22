@@ -20,3 +20,8 @@ export async function getCompanies() {
 
     return companies
 }
+
+export async function getUser(uid) {
+    const querySnapshot = await db.collection('users').where('uid', '==', uid).get()
+    return { id: querySnapshot.docs[0].id, ...querySnapshot.docs[0].data() }
+}

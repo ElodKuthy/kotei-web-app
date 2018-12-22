@@ -1,7 +1,10 @@
 {
     "Login": "Login",
+    "Logout": "Logout",
     "Email": "Email",
     "Password": "Password",
     "auth/invalid-email": "The email address is badly formatted",
-    "auth/wrong-password": "The password is invalid or the user does not have a password"
+    "auth/wrong-password": "The password is invalid or the user does not have a password",
+    "My profile": "My profile",
+    "Name": "Name"
 }

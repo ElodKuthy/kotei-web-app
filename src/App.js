@@ -10,10 +10,9 @@ import Login from './components/Login'
 import PrivateRoute from './components/PrivateRoute'
 import FirebaseObserver from './components/FirebaseObserver'
 import TopAppBar from './components/TopAppBar'
+import MyProfile from './components/MyProfile'
 
-function Home() {
-  return <div>Secret</div>
-}
+const Empty = () => <div />
 
 function App() {
   return (
@@ -24,7 +23,8 @@ function App() {
           <FirebaseObserver />
           <TopAppBar />
           <Switch>
-            <PrivateRoute exact path="/" component={Home} />
+            <PrivateRoute exact path="/" component={Empty} />
+            <PrivateRoute exact path="/profile" component={MyProfile} />
             <Route exact path="/login" component={Login} />
             <Route render={() => (<div>404</div>)} />
           </Switch>  

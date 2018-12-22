@@ -1,7 +1,10 @@
 {
     "Login": "Bejelentkezés",
+    "Logout": "Kijelentkezés",
     "Email": "Email cím",
     "Password": "Jelszó",
     "auth/invalid-email": "Helytelen email cím formátum",
-    "auth/wrong-password": "Helytelen jelszó"
+    "auth/wrong-password": "Helytelen jelszó",
+    "My profile": "Profilom",
+    "Name": "Név"
 }

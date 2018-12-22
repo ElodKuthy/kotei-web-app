@@ -1,7 +1,7 @@
 import { Component } from 'react'
 import { connect } from 'react-redux'
 import { auth } from '../firebase'
-import actions from '../actions'
+import actions, { logout } from '../actions'
 
 class FirebaseObserver extends Component {
 
@@ -11,7 +11,7 @@ class FirebaseObserver extends Component {
             if (user) {
                 login(user)
             } else {
-                // TODO: User is signed out
+                logout()
             }
         })
     }
@@ -28,7 +28,8 @@ class FirebaseObserver extends Component {
 }
   
 const mapDispatchToProps = dispatch => ({
-    login: (user) => dispatch({ type: actions.LOGIN_SUCCEEDED, payload: user })
+    login: (user) => dispatch({ type: actions.LOGIN_SUCCEEDED, payload: user }),
+    logout: () => dispatch({ type: actions.LOGOUT_SUCCEEDED }),
 })
 
 export default connect(null, mapDispatchToProps)(FirebaseObserver)

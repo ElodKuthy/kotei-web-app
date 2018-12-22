@@ -127,4 +127,4 @@ const mapDispatchToProps =  {
   login,
 }
 
-export default withNamespaces()(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Login)))
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withNamespaces()(Login)))
