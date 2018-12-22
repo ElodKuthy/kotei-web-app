@@ -11,6 +11,16 @@ function* login(action) {
    }
 }
 
+function* getCompanies() {
+   try {
+      const companies = yield call(service.getCompanies)
+      yield put({ type: actions.COMPANIES_LOADED, payload: companies })
+   } catch (error) {
+      // TODO: error
+   }
+}
+
 export default function* rootSaga() {
-    yield takeLatest(actions.LOGIN_REQUESTED, login)
+   yield takeLatest(actions.LOGIN_REQUESTED, login)
+   yield takeLatest(actions.COMPANIES_REQUESTED, getCompanies)
 }
