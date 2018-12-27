@@ -1,11 +1,11 @@
 import actions from '../actions'
 
-export default function auth(state = { companies: [] }, action) {
+export default function auth(state = { gyms: [] }, action) {
     switch (action.type) {
-        case actions.COMPANIES_LOADED:
+        case actions.GYMS_LOADED:
             return {
                 ...state,
-                companies: action.payload,
+                gyms: action.payload,
             }
         default:
             return state

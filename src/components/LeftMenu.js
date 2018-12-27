@@ -77,14 +77,13 @@ class LeftMenu extends Component {
     }
 
     render() {
-        const { t, classes, user, menu, companies, gymId } = this.props
-        if (!user) {
+        const { t, classes, userId, menu, gyms, gymId } = this.props
+        if (!userId) {
             return null
         } 
         const { adminOpen } = this.state
         const isOpen = menu === LEFT_MENU_ID
         const gymSelectorOpen = menu === GYM_SELECTOR_MENU_ID
-        const gyms = companies.reduce((acc, { name, gyms }) => acc.concat(gyms.map(gym => ({ ...gym, company: name }))), [])
         const selectedGym = gyms.find(({ id }) => id === gymId)
 
         const drawer = (
@@ -97,7 +96,7 @@ class LeftMenu extends Component {
                             onClick={this.toggleGymSelectorMenu}
                             color="inherit"
                         >
-                            {selectedGym.company} - {selectedGym.name}<ExpandMore />
+                            {selectedGym.name}<ExpandMore />
                         </Button> : null}
                     </div>
                     <Menu
@@ -114,8 +113,8 @@ class LeftMenu extends Component {
                     open={gymSelectorOpen}
                     onClose={this.toggleGymSelectorMenu}
                     >
-                    {gyms && gyms.length ? gyms.map(({ company, name, id }) =>
-                        <MenuItem key={`${company}-${name}`} onClick={this.onGymSelectorMenuItemClick(id)}>{company} - {name}</MenuItem>) : null}
+                    {gyms && gyms.length ? gyms.map(({ name, id }) =>
+                        <MenuItem key={name} onClick={this.onGymSelectorMenuItemClick(id)}>{name}</MenuItem>) : null}
                     </Menu>
                 </div>
                 <Divider />
@@ -168,9 +167,9 @@ class LeftMenu extends Component {
 }
 
 const mapStateToProps = state => ({
-    user: state.auth.user,
+    userId: state.auth.id,
     menu: state.display.menu,
-    companies: state.data.companies,
+    gyms: state.data.gyms,
     gymId: state.selection.gym,
 })
   

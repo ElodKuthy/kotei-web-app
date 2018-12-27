@@ -11,7 +11,7 @@ function* login(action) {
    }
 }
 
-function* logout(action) {
+function* logout() {
    try {
       yield call(service.logout)
       yield put({ type: actions.LOGOUT_SUCCEEDED })
@@ -20,10 +20,10 @@ function* logout(action) {
    }
 }
 
-function* getCompanies() {
+function* getGyms() {
    try {
-      const companies = yield call(service.getCompanies)
-      yield put({ type: actions.COMPANIES_LOADED, payload: companies })
+      const gyms = yield call(service.getGyms)
+      yield put({ type: actions.GYMS_LOADED, payload: gyms })
    } catch (error) {
       // TODO: error
    }
@@ -41,6 +41,6 @@ function* getCurrentUser(action) {
 export default function* rootSaga() {
    yield takeLatest(actions.LOGIN_REQUESTED, login)
    yield takeLatest(actions.LOGOUT_REQUESTED, logout)
-   yield takeLatest(actions.COMPANIES_REQUESTED, getCompanies)
+   yield takeLatest(actions.GYMS_REQUESTED, getGyms)
    yield takeLatest(actions.CURRENT_USER_REQUESTED, getCurrentUser)
 }

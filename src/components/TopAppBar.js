@@ -8,7 +8,7 @@ import IconButton from '@material-ui/core/IconButton'
 import Menu from '@material-ui/core/Menu'
 import MenuIcon from '@material-ui/icons/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
-import { toggleMenu, fetchCompanies, changeSelectedGym, logout } from '../actions'
+import { toggleMenu, fetchGyms, changeSelectedGym, logout } from '../actions'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import { Link } from 'react-router-dom'
 import { drawerWidth, LEFT_MENU_ID } from './LeftMenu'
@@ -56,12 +56,12 @@ class TopAppBar extends Component {
   }
 
   componentDidMount = () => {
-    this.props.fetchCompanies()
+    this.props.fetchGyms()
   }
 
   render () {
-    const { t, classes, user, menu } = this.props
-    if (!user) {
+    const { t, classes, userId, menu } = this.props
+    if (!userId) {
       return null
     }
     const userMenuOpen = menu === USER_MENU_ID
@@ -111,13 +111,13 @@ class TopAppBar extends Component {
 }
 
 const mapStateToProps = state => ({
-  user: state.auth.user,
+  userId: state.auth.id,
   menu: state.display.menu,
 })
 
 const mapDispatchToProps =  {
   toggleMenu,
-  fetchCompanies,
+  fetchGyms,
   changeSelectedGym,
   logout,
 }

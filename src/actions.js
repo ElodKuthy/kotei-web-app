@@ -5,8 +5,8 @@ const actions = {
     LOGOUT_REQUESTED: 'LOGOUT_REQUESTED',
     LOGOUT_SUCCEEDED: 'LOGOUT_SUCCEEDED',
     TOGGLE_MENU: 'TOOGLE_MENU',
-    COMPANIES_REQUESTED: 'COMPANIES_REQUESTED',
-    COMPANIES_LOADED: 'COMPANIES_LOADED',
+    GYMS_REQUESTED: 'GYMS_REQUESTED',
+    GYMS_LOADED: 'GYMS_LOADED',
     CHANGE_SELECTED_GYM: 'CHANGE_SELECTED_GYM',
     CURRENT_USER_REQUESTED: 'CURRENT_USER_REQUESTED',
     CURRENT_USER_LOADED: 'CURRENT_USER_LOADED',
@@ -34,9 +34,9 @@ export function toggleMenu(id) {
     }
 }
 
-export function fetchCompanies() {
+export function fetchGyms() {
     return {
-        type: actions.COMPANIES_REQUESTED,
+        type: actions.GYMS_REQUESTED,
     }
 }
 

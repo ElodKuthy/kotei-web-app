@@ -18,14 +18,10 @@ const styles = theme => ({
 
 class MyProfile extends Component {
    
-    componentDidMount = () => {
-        this.props.fetchCurrentUserData(this.props.user.uid)
-    }
-
     render() {
-        const { t, classes, user, userData } = this.props
+        const { t, classes, userId, name, email } = this.props
 
-        if (!userData) {
+        if (!userId) {
             return null
         }
          
@@ -33,8 +29,8 @@ class MyProfile extends Component {
             <Grid className={classes.root} container justify="center" spacing={24}>
                 <Grid item xs={12} sm={9} md={6}>
                     <Paper className={classes.paper}>
-                        <Typography variant="body1" gutterBottom>{t('Name')}: {userData.name}</Typography>
-                        <Typography variant="body1" gutterBottom>{t('Email')}: {user.email}</Typography>
+                        <Typography variant="body1" gutterBottom>{t('Name')}: {name}</Typography>
+                        <Typography variant="body1" gutterBottom>{t('Email')}: {email}</Typography>
                     </Paper>
                 </Grid>
             </Grid>           
@@ -43,8 +39,9 @@ class MyProfile extends Component {
 }
 
 const mapStateToProps = state => ({
-    user: state.auth.user,
-    userData: state.auth.userData,
+    userId: state.auth.id,
+    name: state.auth.name,
+    email: state.auth.email,
 })
   
 const mapDispatchToProps = {

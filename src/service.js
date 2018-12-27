@@ -8,20 +8,12 @@ export function logout() {
     return auth.signOut()
 }
 
-export async function getCompanies() {
-    const querySnapshot = await db.collection('companies').get()
-    const gymQuerySnapshots = await Promise.all(querySnapshot.docs.map(doc => doc.ref.collection('gyms').get()))
-
-    const companies = querySnapshot.docs.map((company, index) => ({
-        id: company.id,
-        ...company.data(),
-        gyms: gymQuerySnapshots[index].docs.map(gym => ({ id: gym.id, ...gym.data() })),
-    }))
-
-    return companies
+export async function getGyms() {
+    const querySnapshot = await db.collection('gyms').get()
+    return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
 }
 
-export async function getUser(uid) {
-    const querySnapshot = await db.collection('users').where('uid', '==', uid).get()
-    return { id: querySnapshot.docs[0].id, ...querySnapshot.docs[0].data() }
+export async function getUser(id) {
+    const doc = await db.collection('users').doc(id).get()
+    return doc.data()
 }

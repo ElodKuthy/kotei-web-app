@@ -2,12 +2,12 @@ import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-function PrivateRoute({ component: Component, user, ...rest }) {
+function PrivateRoute({ component: Component, userId, ...rest }) {
     return (
         <Route
             {...rest}
             render={props =>
-                user ? (
+                userId ? (
                     <Component {...props} />
                 ) : (
                     <Redirect
@@ -23,7 +23,7 @@ function PrivateRoute({ component: Component, user, ...rest }) {
 }
 
 const mapStateToProps = state => ({
-    user: state.auth.user,
+    userId: state.auth.id,
 })
 
 export default connect(mapStateToProps)(PrivateRoute)

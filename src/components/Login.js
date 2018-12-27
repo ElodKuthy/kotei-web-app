@@ -73,10 +73,10 @@ class Login extends Component {
   }
 
  render() {
-    const { t, classes, user, error, from } = this.props
+    const { t, classes, userId, error, from } = this.props
     const { email, password } = this.state
 
-    if (user) {
+    if (userId) {
       return <Redirect to={from} />
     }
 
@@ -118,7 +118,7 @@ class Login extends Component {
 }
 
 const mapStateToProps = state => ({
-  user: state.auth.user,
+  userId: state.auth.id,
   error: state.auth.error && state.auth.error.code,
   from: state.router.location.state ? state.router.location.state.from : { pathname: '/' }
 })
