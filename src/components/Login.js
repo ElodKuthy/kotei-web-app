@@ -118,7 +118,7 @@ class Login extends Component {
 }
 
 const mapStateToProps = state => ({
-  userId: state.auth.id,
+  userId: state.auth.uid,
   error: state.auth.error && state.auth.error.code,
   from: state.router.location.state ? state.router.location.state.from : { pathname: '/' }
 })

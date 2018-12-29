@@ -5,7 +5,7 @@ export default function auth(state = { gyms: [] }, action) {
         case actions.GYMS_LOADED:
             return {
                 ...state,
-                gyms: action.payload,
+                gyms: action.payload || [],
             }
         default:
             return state

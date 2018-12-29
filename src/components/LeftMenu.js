@@ -8,19 +8,15 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import { withStyles } from '@material-ui/core/styles'
-import { toggleMenu, changeSelectedGym } from '../actions'
+import { toggleMenu } from '../actions'
 import Collapse from '@material-ui/core/Collapse'
 import ExpandLess from '@material-ui/icons/ExpandLess'
 import ExpandMore from '@material-ui/icons/ExpandMore'
-import Button from '@material-ui/core/Button'
-import Menu from '@material-ui/core/Menu'
-import MenuItem from '@material-ui/core/MenuItem'
+import GymSelector from './GymSelector'
 
 export const drawerWidth = 240
 
 export const LEFT_MENU_ID = 'left-menu'
-const GYM_SELECTOR_MENU_ID = 'top-bar--gym-selector-menu'
-
 
 const styles = theme => ({
     drawer: {
@@ -62,61 +58,21 @@ class LeftMenu extends Component {
         this.props.toggleMenu(LEFT_MENU_ID)
     }
 
-    toggleGymSelectorMenu = () => {
-        this.props.toggleMenu(GYM_SELECTOR_MENU_ID)
-    }
-
-
-    onGymSelectorMenuItemClick = (id) => () => {
-        this.props.changeSelectedGym(id)
-        this.toggleGymSelectorMenu()
-    }
-
     onAdminClick = () => {
         this.setState({ adminOpen: !this.state.adminOpen })
     }
 
     render() {
-        const { t, classes, userId, menu, gyms, gymId } = this.props
+        const { t, classes, userId, menu } = this.props
         if (!userId) {
             return null
         } 
         const { adminOpen } = this.state
         const isOpen = menu === LEFT_MENU_ID
-        const gymSelectorOpen = menu === GYM_SELECTOR_MENU_ID
-        const selectedGym = gyms.find(({ id }) => id === gymId)
 
         const drawer = (
             <div>
-                <div className={classes.toolbar}>
-                    <div ref={this.gymSelectorButton}>
-                        { gyms && gyms.length && selectedGym ? <Button 
-                            aria-owns={gymSelectorOpen ? GYM_SELECTOR_MENU_ID : undefined}
-                            aria-haspopup="true"
-                            onClick={this.toggleGymSelectorMenu}
-                            color="inherit"
-                        >
-                            {selectedGym.name}<ExpandMore />
-                        </Button> : null}
-                    </div>
-                    <Menu
-                    id={GYM_SELECTOR_MENU_ID}
-                    anchorEl={this.gymSelectorButton.current}
-                    anchorOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right',
-                    }}
-                    transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right',
-                    }}
-                    open={gymSelectorOpen}
-                    onClose={this.toggleGymSelectorMenu}
-                    >
-                    {gyms && gyms.length ? gyms.map(({ name, id }) =>
-                        <MenuItem key={name} onClick={this.onGymSelectorMenuItemClick(id)}>{name}</MenuItem>) : null}
-                    </Menu>
-                </div>
+                <GymSelector className={classes.toolbar} />
                 <Divider />
                 <List>
                     <ListItem button onClick={this.onAdminClick}>
@@ -167,15 +123,12 @@ class LeftMenu extends Component {
 }
 
 const mapStateToProps = state => ({
-    userId: state.auth.id,
+    userId: state.auth.uid,
     menu: state.display.menu,
-    gyms: state.data.gyms,
-    gymId: state.selection.gym,
 })
   
 const mapDispatchToProps = {
     toggleMenu,
-    changeSelectedGym,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withNamespaces()(LeftMenu)))

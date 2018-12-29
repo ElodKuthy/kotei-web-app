@@ -5,7 +5,6 @@ import { withStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
-import { fetchCurrentUserData } from '../actions'
 
 const styles = theme => ({
     root: {
@@ -19,11 +18,12 @@ const styles = theme => ({
 class MyProfile extends Component {
    
     render() {
-        const { t, classes, userId, name, email } = this.props
-
-        if (!userId) {
+        if (!this.props.userId) {
             return null
         }
+
+        const { t, classes, roles, selectedGymId, email } = this.props
+        const { name } = roles.find(role => role.gymId === selectedGymId) || {}
          
         return (           
             <Grid className={classes.root} container justify="center" spacing={24}>
@@ -39,13 +39,10 @@ class MyProfile extends Component {
 }
 
 const mapStateToProps = state => ({
-    userId: state.auth.id,
-    name: state.auth.name,
+    userId: state.auth.uid,
+    roles: state.auth.roles,
+    selectedGymId: state.selection.gym,
     email: state.auth.email,
 })
-  
-const mapDispatchToProps = {
-    fetchCurrentUserData,
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withNamespaces()(MyProfile)))
+export default connect(mapStateToProps)(withStyles(styles)(withNamespaces()(MyProfile)))

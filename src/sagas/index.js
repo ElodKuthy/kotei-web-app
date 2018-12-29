@@ -4,8 +4,7 @@ import * as service from '../service'
 
 function* login(action) {
    try {
-      const { user } = yield call(service.login, action.payload.email, action.payload.password)
-      yield put({ type: actions.LOGIN_SUCCEEDED, payload: user })
+      yield call(service.login, action.payload.email, action.payload.password)
    } catch (error) {
       yield put({ type: actions.LOGIN_FAILED, error })
    }
@@ -14,9 +13,9 @@ function* login(action) {
 function* logout() {
    try {
       yield call(service.logout)
-      yield put({ type: actions.LOGOUT_SUCCEEDED })
    } catch (error) {
-
+      console.log(error)
+      // TODO: error      
    }
 }
 
@@ -25,15 +24,17 @@ function* getGyms() {
       const gyms = yield call(service.getGyms)
       yield put({ type: actions.GYMS_LOADED, payload: gyms })
    } catch (error) {
+      console.log(error)
       // TODO: error
    }
 }
 
-function* getCurrentUser(action) {
+function* getRoles(action) {
    try {
-      const user = yield call(service.getUser, action.payload.uid)
-      yield put({ type: actions.CURRENT_USER_LOADED, payload: user })
+      const roles = yield call(service.getRoles, action.payload.uid)
+      yield put({ type: actions.USER_ROLES_LOADED, payload: roles })
    } catch (error) {
+      console.log(error)
       // TODO: error
    }
 }
@@ -42,5 +43,5 @@ export default function* rootSaga() {
    yield takeLatest(actions.LOGIN_REQUESTED, login)
    yield takeLatest(actions.LOGOUT_REQUESTED, logout)
    yield takeLatest(actions.GYMS_REQUESTED, getGyms)
-   yield takeLatest(actions.CURRENT_USER_REQUESTED, getCurrentUser)
+   yield takeLatest(actions.USER_ROLES_REQUESTED, getRoles)
 }

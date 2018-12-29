@@ -8,8 +8,8 @@ const actions = {
     GYMS_REQUESTED: 'GYMS_REQUESTED',
     GYMS_LOADED: 'GYMS_LOADED',
     CHANGE_SELECTED_GYM: 'CHANGE_SELECTED_GYM',
-    CURRENT_USER_REQUESTED: 'CURRENT_USER_REQUESTED',
-    CURRENT_USER_LOADED: 'CURRENT_USER_LOADED',
+    USER_ROLES_REQUESTED: 'USER_ROLES_REQUESTED',
+    USER_ROLES_LOADED: 'USER_ROLES_LOADED',
 }
 
 export default actions
@@ -47,9 +47,9 @@ export function changeSelectedGym(id) {
     }
 }
 
-export function fetchCurrentUserData(uid) {
+export function fetchUserRoles(uid) {
     return {
-        type: actions.CURRENT_USER_REQUESTED,
+        type: actions.USER_ROLES_REQUESTED,
         payload: { uid }
     }
 }
