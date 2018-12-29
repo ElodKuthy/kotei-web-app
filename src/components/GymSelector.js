@@ -20,19 +20,23 @@ class GymSelector extends Component {
         this.setState(({ open }) => ({ open: !open }))
     }
 
+    changeSelectedGym = (gymId) => {
+        const { changeSelectedGym, roles, selectedGymId } = this.props
+        if (gymId !== selectedGymId) {
+            const { selected, ...rest } = roles.find(role => role.gymId === gymId) || {}
+            changeSelectedGym({ gymId, ...rest })
+        }
+    }
+
     onGymSelectorMenuItemClick = (gymId) => () => {
-        const { changeSelectedGym, roles } = this.props
-        const { selected, ...rest } = roles.find(role => role.gymId === gymId) || {}
-        changeSelectedGym({ gymId, ...rest })
+        this.changeSelectedGym(gymId)
         this.toggleGymSelectorMenu()
     }
 
     componentDidUpdate = (prevProps) => {
         if (prevProps.roles !== this.props.roles) {
-            const { changeSelectedGym, roles } = this.props
-            const gymId = (roles.find(({ selected }) => selected) || {}).gymId
-            const { selected, ...rest } = roles.find(role => role.gymId === gymId) || {}
-            changeSelectedGym({ gymId, ...rest })  
+            const gymId = (this.props.roles.find(({ selected }) => selected) || {}).gymId
+            this.changeSelectedGym(gymId)
         }      
     }
 
