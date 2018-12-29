@@ -63,10 +63,11 @@ class LeftMenu extends Component {
     }
 
     render() {
-        const { t, classes, userId, menu } = this.props
-        if (!userId) {
+        const { t, classes, userId, menu, coach, admin } = this.props
+        if (!userId || (!coach && !admin)) {
             return null
         } 
+
         const { adminOpen } = this.state
         const isOpen = menu === LEFT_MENU_ID
 
@@ -125,6 +126,8 @@ class LeftMenu extends Component {
 const mapStateToProps = state => ({
     userId: state.auth.uid,
     menu: state.display.menu,
+    coach: state.selection.coach,
+    admin: state.selection.admin,
 })
   
 const mapDispatchToProps = {

@@ -12,6 +12,8 @@ import { toggleMenu, fetchGyms, changeSelectedGym, logout } from '../actions'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import { Link } from 'react-router-dom'
 import { drawerWidth, LEFT_MENU_ID } from './LeftMenu'
+import GymSelector from './GymSelector'
+import classNames from 'classnames'
 
 const USER_MENU_ID = 'top-bar--user-menu'
 
@@ -60,22 +62,27 @@ class TopAppBar extends Component {
   }
 
   render () {
-    const { t, classes, userId, menu } = this.props
+    const { t, classes, userId, menu, coach, admin } = this.props
     if (!userId) {
       return null
     }
     const userMenuOpen = menu === USER_MENU_ID
     return (
-        <AppBar position="fixed" className={classes.appBar}>
+        <AppBar position="fixed" className={classNames({[classes.appBar]: coach || admin })}>
           <Toolbar>
-            <IconButton 
-              className={classes.menuButton} 
-              color="inherit" 
-              aria-label="Menu"
-              onClick={this.onLeftMenuButtonClick}
-            >
-              <MenuIcon />
-            </IconButton>
+            {coach || admin ? (
+              <IconButton 
+                className={classes.menuButton} 
+                color="inherit" 
+                aria-label="Menu"
+                onClick={this.onLeftMenuButtonClick}
+              >
+                <MenuIcon />
+              </IconButton>
+            ) : (
+              <GymSelector />
+            )}
+
             <div className={classes.grow} />
             <div ref={this.userMenuButton}>
               <IconButton
@@ -113,6 +120,8 @@ class TopAppBar extends Component {
 const mapStateToProps = state => ({
   userId: state.auth.uid,
   menu: state.display.menu,
+  coach: state.selection.coach,
+  admin: state.selection.admin,
 })
 
 const mapDispatchToProps =  {
