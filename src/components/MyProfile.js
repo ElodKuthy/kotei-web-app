@@ -22,8 +22,7 @@ class MyProfile extends Component {
             return null
         }
 
-        const { t, classes, roles, selectedGymId, email } = this.props
-        const { name } = roles.find(role => role.gymId === selectedGymId) || {}
+        const { t, classes, name, email } = this.props
          
         return (           
             <Grid className={classes.root} container justify="center" spacing={24}>
@@ -40,8 +39,7 @@ class MyProfile extends Component {
 
 const mapStateToProps = state => ({
     userId: state.auth.uid,
-    roles: state.auth.roles,
-    selectedGymId: state.selection.gym,
+    name: state.selection.name,
     email: state.auth.email,
 })
 

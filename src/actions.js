@@ -40,10 +40,10 @@ export function fetchGyms() {
     }
 }
 
-export function changeSelectedGym(id) {
+export function changeSelectedGym(selection) {
     return {
         type: actions.CHANGE_SELECTED_GYM,
-        payload: id,
+        payload: selection,
     }
 }
 

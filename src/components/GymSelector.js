@@ -20,21 +20,33 @@ class GymSelector extends Component {
         this.setState(({ open }) => ({ open: !open }))
     }
 
-    onGymSelectorMenuItemClick = (id) => () => {
-        this.props.changeSelectedGym(id)
+    onGymSelectorMenuItemClick = (gymId) => () => {
+        const { changeSelectedGym, roles } = this.props
+        const { selected, ...rest } = roles.find(role => role.gymId === gymId) || {}
+        changeSelectedGym({ gymId, ...rest })
         this.toggleGymSelectorMenu()
     }
 
-    render() {
-        const { className, userId, roles, selectedGymId } = this.props
-        const { open } = this.state
-        
-        if (!userId) {
+    componentDidUpdate = (prevProps) => {
+        if (prevProps.roles !== this.props.roles) {
+            const { changeSelectedGym, roles } = this.props
+            const gymId = (roles.find(({ selected }) => selected) || {}).gymId
+            const { selected, ...rest } = roles.find(role => role.gymId === gymId) || {}
+            changeSelectedGym({ gymId, ...rest })  
+        }      
+    }
+
+    render() {        
+        if (!this.props.userId) {
             return null
         } 
         
+        const { className, roles, selectedGymId } = this.props
+        const { open } = this.state
+
+        
         const gyms = this.props.gyms.filter(gym => roles.find(role => role.gymId === gym.id))
-        const selectedGym = gyms.find(({ id }) => id === selectedGymId)
+        const selectedGym = gyms.find(({ id }) => id === selectedGymId) 
 
         return (
             <div className={className}>
@@ -74,7 +86,7 @@ const mapStateToProps = state => ({
     userId: state.auth.uid,
     roles: state.auth.roles,
     gyms: state.data.gyms,
-    selectedGymId: state.selection.gym,
+    selectedGymId: state.selection.gymId,
 })
   
 const mapDispatchToProps = {
