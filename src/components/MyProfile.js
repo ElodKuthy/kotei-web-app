@@ -38,8 +38,8 @@ class MyProfile extends Component {
 }
 
 const mapStateToProps = state => ({
-    userId: state.auth.uid,
-    name: state.selection.name,
+    userId: state.auth.id,
+    name: state.auth.name,
     email: state.auth.email,
 })
 

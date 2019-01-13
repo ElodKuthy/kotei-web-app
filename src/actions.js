@@ -8,16 +8,8 @@ const actions = {
     GYMS_REQUESTED: 'GYMS_REQUESTED',
     GYMS_LOADED: 'GYMS_LOADED',
     CHANGE_SELECTED_GYM: 'CHANGE_SELECTED_GYM',
-    USER_ROLES_REQUESTED: 'USER_ROLES_REQUESTED',
-    USER_ROLES_LOADED: 'USER_ROLES_LOADED',
-    LOCATIONS_REQUESTED: 'LOCATIONS_REQUESTED',
-    LOCATIONS_LOADED: 'LOCATIONS_LOADED',
-    TRAINING_TYPES_REQUESTED: 'TRAINING_TYPES_REQUESTED',
-    TRAINING_TYPES_LOADED: 'TRAINING_TYPES_LOADED',
     TRAININGS_REQUESTED: 'TRAININGS_REQUESTED',
     TRAININGS_LOADED: 'TRAININGS_LOADED',
-    COACHES_REQUESTED: 'COACHES_REQUESTED',
-    COACHES_LOADED: 'COACHES_LOADED',
 }
 
 export default actions
@@ -52,34 +44,6 @@ export function changeSelectedGym(selection) {
     return {
         type: actions.CHANGE_SELECTED_GYM,
         payload: selection,
-    }
-}
-
-export function fetchUserRoles(uid) {
-    return {
-        type: actions.USER_ROLES_REQUESTED,
-        payload: { uid }
-    }
-}
-
-export function fetchLocations(gymId) {
-    return {
-        type: actions.LOCATIONS_REQUESTED,
-        payload: { gymId }
-    }
-}
-
-export function fetchTrainingTypes(gymId) {
-    return {
-        type: actions.TRAINING_TYPES_REQUESTED,
-        payload: { gymId }
-    }
-}
-
-export function fetchCoaches(gymId) {
-    return {
-        type: actions.COACHES_REQUESTED,
-        payload: { gymId }
     }
 }
 

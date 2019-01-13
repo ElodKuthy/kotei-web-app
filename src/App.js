@@ -8,7 +8,6 @@ import theme from './theme'
 import store, { history } from './store'
 import Login from './components/Login'
 import PrivateRoute from './components/PrivateRoute'
-import FirebaseObserver from './components/FirebaseObserver'
 import TopAppBar from './components/TopAppBar'
 import MyProfile from './components/MyProfile'
 import LeftMenu from './components/LeftMenu'
@@ -23,7 +22,6 @@ function App() {
     <ConnectedRouter history={history}>
         <MuiThemeProvider theme={theme}>
           <CssBaseline />
-          <FirebaseObserver />
           <TopAppBar />
           <LeftMenu />
           <ContentContainer>

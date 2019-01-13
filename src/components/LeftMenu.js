@@ -43,6 +43,9 @@ const styles = theme => ({
     nested: {
         paddingLeft: theme.spacing.unit * 4,
     },
+    icon: {
+        color: theme.palette.common.white,
+    },
 })
 
 
@@ -72,13 +75,13 @@ class LeftMenu extends Component {
         const isOpen = menu === LEFT_MENU_ID
 
         const drawer = (
-            <div>
+            <div color="inherit">
                 <GymSelector className={classes.toolbar} />
                 <Divider />
                 <List>
                     <ListItem button onClick={this.onAdminClick}>
                         <ListItemText primary={t('Administration')} />
-                        {adminOpen ? <ExpandLess /> : <ExpandMore />}
+                        {adminOpen ? <ExpandLess className={classes.icon} /> : <ExpandMore className={classes.icon} />}
                     </ListItem>
                     <Collapse in={adminOpen} timeout="auto" unmountOnExit>
                         <List component="div" disablePadding>
@@ -124,7 +127,7 @@ class LeftMenu extends Component {
 }
 
 const mapStateToProps = state => ({
-    userId: state.auth.uid,
+    userId: state.auth.id,
     menu: state.display.menu,
     coach: state.selection.coach,
     admin: state.selection.admin,

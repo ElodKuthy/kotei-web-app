@@ -1,6 +1,26 @@
+import { Base64 } from 'js-base64'
 import actions from '../actions'
 
-export default function auth(state = { roles: [] }, action) {
+function parseToken(jwt) {
+    try {
+        const { role, ...rest } = JSON.parse(Base64.decode((jwt).split('.')[1]))
+        return {
+            ...rest,
+            roles: [{
+                gymId: 1,
+                selected: true,
+                admin: role === 'admin',
+                coach: role === 'coach',
+                client: role === 'client',
+            }],
+        }
+    } catch (err) {
+        console.error(err)
+        return {}
+    }
+}
+
+export default function auth(state = { ...parseToken(localStorage.getItem('jwt')) }, action) {
     switch (action.type) {
         case actions.LOGIN_REQUESTED:
         case actions.LOGOUT_REQUESTED:
@@ -8,9 +28,7 @@ export default function auth(state = { roles: [] }, action) {
             return { roles: [] }
         case actions.LOGIN_SUCCEEDED:
             return {
-                uid: action.payload.uid,
-                email: action.payload.email,
-                roles: [],
+                ...parseToken(action.payload.jwt),
             }
         case actions.LOGIN_FAILED:
             return {

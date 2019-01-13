@@ -1,43 +1,43 @@
-import { auth, db } from './firebase'
+function authHeader() {
+    const jwt = localStorage.getItem('jwt');
 
-export function login(username, password) {
-    return auth.signInWithEmailAndPassword(username, password)
+    if (jwt) {
+        return { 'Authorization': 'Bearer ' + jwt };
+    } else {
+        return {};
+    }
+}
+
+export async function login(userName, password) {
+    const response = await fetch('https://tkm.kotei.hu/api/login', {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userName, password }),
+    })
+    const { jwt } = await response.json()
+    localStorage.setItem('jwt', jwt)
+    return jwt
 }
 
 export function logout() {
-    return auth.signOut()
+    localStorage.removeItem('jwt')
 }
 
 export async function getGyms() {
-    const gyms = await db.collection('gyms').orderBy('name').get()
-    return gyms.docs.map(doc => ({ id: doc.id, ...doc.data() }))
-}
-
-export async function getRoles(uid) {
-    const gyms = await db.collection('gyms').get()
-    const roles = await Promise.all(gyms.docs.map(doc => doc.ref.collection('users').doc(uid).get()))
-    return gyms.docs
-        .map((doc, index) => ({ gymId: doc.id, roles: roles[index] }))
-        .filter(({ roles }) => roles.exists)
-        .map(({ gymId, roles }) => ({ gymId, ...roles.data() }))
-}
-
-export async function getLocations(gymId) {
-    const locations = await db.collection('gyms').doc(gymId).collection('locations').orderBy('name').get()
-    return locations.docs.map(doc => ({ id: doc.id, ...doc.data() }))
-}
-
-export async function getTrainingTypes(gymId) {
-    const trainingTypes = await db.collection('gyms').doc(gymId).collection('trainingTypes').orderBy('name').get()
-    return trainingTypes.docs.map(doc => ({ id: doc.id, ...doc.data() }))
-}
-
-export async function getCoaches(gymId) {
-    const coaches = await db.collection('gyms').doc(gymId).collection('users').where('coach', '==', true).orderBy('name').get()
-    return coaches.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+    return [{ id: 1, name: 'TKM - Őr utca'}]
 }
 
 export async function getTrainings(gymId, from, to) {
-    const trainings = await db.collection('gyms').doc(gymId).collection('trainings').where('from', '>=', from).where('from', '<=', to).orderBy('from').get()
-    return trainings.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+    const categoryId = 1
+    const response = await fetch(`https://tkm.kotei.hu/api/training?where={"$and":[${categoryId ? `{"training_category_id":${categoryId}},` : ''}{"from":{"$gte":"${from}"}},{"to":{"$lte":"${to}"}}]}&order=\`from\`%20ASC`, {
+        method: 'GET',
+        headers: {
+            ...authHeader(),
+        },
+        mode: 'cors',        
+    })
+    return response.json()
 }

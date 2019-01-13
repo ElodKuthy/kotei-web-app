@@ -33,11 +33,9 @@ class GymSelector extends Component {
         this.toggleGymSelectorMenu()
     }
 
-    componentDidUpdate = (prevProps) => {
-        if (prevProps.roles !== this.props.roles) {
-            const gymId = (this.props.roles.find(({ selected }) => selected) || {}).gymId
-            this.changeSelectedGym(gymId)
-        }      
+    componentDidMount = () => {
+        const gymId = (this.props.roles.find(({ selected }) => selected) || {}).gymId
+        this.changeSelectedGym(gymId)        
     }
 
     render() {        
@@ -59,7 +57,6 @@ class GymSelector extends Component {
                         aria-owns={open ? GYM_SELECTOR_MENU_ID : undefined}
                         aria-haspopup="true"
                         onClick={this.toggleGymSelectorMenu}
-                        color="inherit"
                     >
                         {selectedGym.name}<ExpandMore />
                     </Button>}
@@ -87,7 +84,7 @@ class GymSelector extends Component {
 }
 
 const mapStateToProps = state => ({
-    userId: state.auth.uid,
+    userId: state.auth.id,
     roles: state.auth.roles,
     gyms: state.data.gyms,
     selectedGymId: state.selection.gymId,

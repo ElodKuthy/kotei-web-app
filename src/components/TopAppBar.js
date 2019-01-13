@@ -128,7 +128,7 @@ class TopAppBar extends Component {
 }
 
 const mapStateToProps = state => ({
-  userId: state.auth.uid,
+  userId: state.auth.id,
   menu: state.display.menu,
   coach: state.selection.coach,
   admin: state.selection.admin,

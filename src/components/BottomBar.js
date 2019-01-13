@@ -71,7 +71,7 @@ class BottomBar extends Component {
 
                     <div className={classes.grow} />
                     <Tooltip title={t(previousTooltips[range])}>
-                        <Link className={classes.link} to={`/schedule/${range}/${value - 1}`}>
+                        <Link className={classes.link} to={`/schedule/${range}/${parseInt(value, 10) - 1}`}>
                             <IconButton color="inherit">
                                 <ChevronLeft />
                             </IconButton>
@@ -85,7 +85,7 @@ class BottomBar extends Component {
                         </Link>
                     </Tooltip>
                     <Tooltip title={t(nextTooltips[range])}>
-                        <Link className={classes.link} to={`/schedule/${range}/${value + 1}`}>
+                        <Link className={classes.link} to={`/schedule/${range}/${parseInt(value, 10) + 1}`}>
                             <IconButton color="inherit">
                                 <ChevronRight />
                             </IconButton>

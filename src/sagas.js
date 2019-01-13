@@ -4,7 +4,8 @@ import * as service from './service'
 
 function* login(action) {
    try {
-      yield call(service.login, action.payload.email, action.payload.password)
+      const jwt = yield call(service.login, action.payload.email, action.payload.password)
+      yield put({ type: actions.LOGIN_SUCCEEDED, payload: { jwt }})
    } catch (error) {
       yield put({ type: actions.LOGIN_FAILED, error })
    }
@@ -29,46 +30,6 @@ function* getGyms() {
    }
 }
 
-function* getRoles(action) {
-   try {
-      const roles = yield call(service.getRoles, action.payload.uid)
-      yield put({ type: actions.USER_ROLES_LOADED, payload: roles })
-   } catch (error) {
-      console.log(error)
-      // TODO: error
-   }
-}
-
-function* getLocations(action) {
-   try {
-      const locations = yield call(service.getLocations, action.payload.gymId)
-      yield put({ type: actions.LOCATIONS_LOADED, payload: locations })
-   } catch (error) {
-      console.log(error)
-      // TODO: error
-   }
-}
-
-function* getTrainingTypes(action) {
-   try {
-      const trainingTypes = yield call(service.getTrainingTypes, action.payload.gymId)
-      yield put({ type: actions.TRAINING_TYPES_LOADED, payload: trainingTypes })
-   } catch (error) {
-      console.log(error)
-      // TODO: error
-   }
-}
-
-function* getCoaches(action) {
-   try {
-      const coaches = yield call(service.getCoaches, action.payload.gymId)
-      yield put({ type: actions.COACHES_LOADED, payload: coaches })
-   } catch (error) {
-      console.log(error)
-      // TODO: error
-   }
-}
-
 function* getTrainings(action) {
    try {
       const trainings = yield call(service.getTrainings, action.payload.gymId, action.payload.from, action.payload.to)
@@ -83,9 +44,5 @@ export default function* rootSaga() {
    yield takeLatest(actions.LOGIN_REQUESTED, login)
    yield takeLatest(actions.LOGOUT_REQUESTED, logout)
    yield takeLatest(actions.GYMS_REQUESTED, getGyms)
-   yield takeLatest(actions.USER_ROLES_REQUESTED, getRoles)
-   yield takeLatest(actions.LOCATIONS_REQUESTED, getLocations)
-   yield takeLatest(actions.TRAINING_TYPES_REQUESTED, getTrainingTypes)
    yield takeLatest(actions.TRAININGS_REQUESTED, getTrainings)
-   yield takeLatest(actions.COACHES_REQUESTED, getCoaches)
 }

@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { withNamespaces } from 'react-i18next'
 import { withStyles } from '@material-ui/core/styles'
-import { fetchLocations, fetchTrainingTypes, fetchCoaches, fetchTrainings } from '../actions'
+import { fetchTrainings } from '../actions'
 import moment from 'moment'
 import 'moment/locale/hu'
 import Typography from '@material-ui/core/Typography'
@@ -23,16 +23,16 @@ class Schedule extends Component {
         let to = moment().endOf('isoWeek').toDate()
         switch (range) {
             case 'month':
-                from = moment().month(value).startOf('month').toDate()
-                to = moment().month(value).endOf('month').toDate()
+                from = moment().month(value).startOf('month').format('YYYY-MM-DD')
+                to = moment().month(value).endOf('month').format('YYYY-MM-DD')
                 break
             case 'week':
-                from = moment().isoWeek(value).startOf('isoWeek').toDate()
-                to = moment().isoWeek(value).endOf('isoWeek').toDate()
+                from = moment().isoWeek(value).startOf('isoWeek').format('YYYY-MM-DD')
+                to = moment().isoWeek(value).endOf('isoWeek').format('YYYY-MM-DD')
                 break
             case 'day':
-                from = moment().dayOfYear(value).startOf('day').toDate()
-                to = moment().dayOfYear(value).endOf('day').toDate()
+                from = moment().dayOfYear(value).startOf('day').format('YYYY-MM-DD')
+                to = moment().dayOfYear(value).endOf('day').format('YYYY-MM-DD')
                 break
             default:
                 break
@@ -41,23 +41,32 @@ class Schedule extends Component {
     }
 
     renderDay = () => {
-        const { classes, locations, trainings, match: { params: { value } } } = this.props
+        const { classes, trainings, match: { params: { value } } } = this.props
         const day = value ? moment().dayOfYear(value).startOf('day') : moment().startOf('day')
+        const locations = trainings.reduce((acc, curr) => {
+            if (!acc.find(item => item.id === curr.Location.id)) {
+                acc.push(curr.Location)
+            }
+            return acc
+        }, [])
         return (
             <div>
                 <Typography variant="h4" gutterBottom>{day.locale('hu').format('LLLL').replace(' 0:00', '')}</Typography><br />
                 {locations.map(location => {
-                    const trainingsOnLocation = trainings.filter(training => training.location === location.id)
+                    const trainingsOnLocation = trainings.filter(training => training.Location.id === location.id)
                     return !!trainingsOnLocation.length && (
                         <div key={location.id}>
                             <Typography variant="h4" gutterBottom>{location.name}</Typography> 
                             {trainingsOnLocation.map(training => (
                                 <div key={training.id}>
-                                    <Typography variant="h6">{moment.unix(training.from.seconds).locale('hu').format('LT')}</Typography>
+                                    <Typography variant="h6">{moment(training.from).locale('hu').format('LT')}</Typography>
                                     <Paper className={classes.paper}>
-                                        <Typography variant="body1">{training.name}</Typography>
-                                        <Typography variant="body1">{training.coach.alias || training.coach.name}</Typography>
-                                        <Typography variant="body1">{training.current} / {training.max}</Typography>
+                                        <Typography variant="body1">{training.TrainingType.name}</Typography>
+                                        <Typography variant="body1">{training.Coach.nickname || training.Coach.fullName}</Typography>
+                                        {training.max 
+                                            ? <Typography variant="body1">{Math.round(training.utilization * training.max / 100)} / {training.max}</Typography>
+                                            : <Typography variant="body1">{training.utilization}%</Typography>
+                                        }
                                     </Paper>
                                 </div>
                             ))}
@@ -81,16 +90,17 @@ class Schedule extends Component {
     }
 
     componentDidUpdate = (prevProps) => {
-        const { gymId, fetchLocations, fetchTrainingTypes, fetchCoaches, match: { params: { range, value } } } = this.props
+        const { gymId, match: { params: { range, value } } } = this.props
         if (prevProps.gymId !== gymId) {
-            fetchLocations(gymId)
-            fetchTrainingTypes(gymId)
-            fetchCoaches(gymId)
             this.fetchTrainings()
         }
         if (prevProps.match.params.range !== range || prevProps.match.params.value !== value) {
             this.fetchTrainings()
         }
+    }
+
+    componentDidMount = () => {
+        this.fetchTrainings()
     }
 
     render() {
@@ -119,14 +129,10 @@ class Schedule extends Component {
 
 const mapStateToProps = state => ({
     gymId: state.selection.gymId,
-    locations: state.data.locations,
     trainings: state.data.trainings,
 })
   
 const mapDispatchToProps = {
-    fetchLocations,
-    fetchTrainingTypes,
-    fetchCoaches,
     fetchTrainings,
 }
 
