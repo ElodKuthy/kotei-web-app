@@ -14,6 +14,8 @@ import { Link } from 'react-router-dom'
 import { drawerWidth, LEFT_MENU_ID } from './LeftMenu'
 import GymSelector from './GymSelector'
 import classNames from 'classnames'
+import Dashboard from '@material-ui/icons/Dashboard'
+import Tooltip from '@material-ui/core/Tooltip'
 
 const USER_MENU_ID = 'top-bar--user-menu'
 
@@ -37,6 +39,7 @@ const styles = theme => ({
   link: {
     textDecoration: 'none',
     outline: 'none',
+    color: 'inherit',
   }
 })
 
@@ -84,6 +87,13 @@ class TopAppBar extends Component {
             )}
 
             <div className={classes.grow} />
+            <Tooltip title={t('Schedule')}>
+              <Link className={classes.link} to="/schedule">
+                <IconButton color="inherit">
+                  <Dashboard />
+                </IconButton>
+              </Link>
+            </Tooltip>
             <div ref={this.userMenuButton}>
               <IconButton
                 aria-owns={userMenuOpen ? USER_MENU_ID : undefined}
