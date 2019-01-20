@@ -49,6 +49,7 @@ class GymSelector extends Component {
         
         const gyms = this.props.gyms.filter(gym => roles.find(role => role.gymId === gym.id))
         const selectedGym = gyms.find(({ id }) => id === selectedGymId) 
+        const multipleGyms = gyms.length > 1
 
         return (
             <div className={className}>
@@ -57,8 +58,9 @@ class GymSelector extends Component {
                         aria-owns={open ? GYM_SELECTOR_MENU_ID : undefined}
                         aria-haspopup="true"
                         onClick={this.toggleGymSelectorMenu}
+                        disabled={!multipleGyms}
                     >
-                        {selectedGym.name}<ExpandMore />
+                        {selectedGym.name}{multipleGyms && <ExpandMore />}
                     </Button>}
                 </div>
                 <Menu
