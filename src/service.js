@@ -32,7 +32,7 @@ export async function getGyms() {
 
 export async function getTrainings(gymId, from, to) {
     const categoryId = 1
-    const response = await fetch(`https://tkm.kotei.hu/api/training?where={"$and":[${categoryId ? `{"training_category_id":${categoryId}},` : ''}{"from":{"$gte":"${from}"}},{"to":{"$lte":"${to}"}}]}&order=\`from\`%20ASC`, {
+    const response = await fetch(`https://tkm.kotei.hu/api/training?where={"$and":[${categoryId ? `{"training_category_id":${categoryId}},` : ''}{"from":{"$gte":"${from}"}},{"to":{"$lt":"${to}"}}]}&order=\`from\`%20ASC`, {
         method: 'GET',
         headers: {
             ...authHeader(),

@@ -18,31 +18,12 @@ const styles = theme => ({
 class Schedule extends Component {
 
     fetchTrainings = () => {
-        const { gymId, fetchTrainings, match: { params: { range, value } } } = this.props
-        let from = moment().startOf('isoWeek').toDate()
-        let to = moment().endOf('isoWeek').toDate()
-        switch (range) {
-            case 'month':
-                from = moment().month(value).startOf('month').format('YYYY-MM-DD')
-                to = moment().month(value).endOf('month').format('YYYY-MM-DD')
-                break
-            case 'week':
-                from = moment().isoWeek(value).startOf('isoWeek').format('YYYY-MM-DD')
-                to = moment().isoWeek(value).endOf('isoWeek').format('YYYY-MM-DD')
-                break
-            case 'day':
-                from = moment().dayOfYear(value).startOf('day').format('YYYY-MM-DD')
-                to = moment().dayOfYear(value).endOf('day').format('YYYY-MM-DD')
-                break
-            default:
-                break
-        }
+        const { gymId, fetchTrainings, from, to } = this.props
         fetchTrainings(gymId, from, to)
     }
 
     renderDay = () => {
-        const { classes, trainings, match: { params: { value } } } = this.props
-        const day = value ? moment().dayOfYear(value).startOf('day') : moment().startOf('day')
+        const { classes, trainings, from } = this.props
         const locations = trainings.reduce((acc, curr) => {
             if (!acc.find(item => item.id === curr.Location.id)) {
                 acc.push(curr.Location)
@@ -51,7 +32,7 @@ class Schedule extends Component {
         }, [])
         return (
             <div>
-                <Typography variant="h4" gutterBottom>{day.locale('hu').format('LLLL').replace(' 0:00', '')}</Typography><br />
+                <Typography variant="h4" gutterBottom>{moment(from).locale('hu').format('LLLL').replace(' 0:00', '')}</Typography><br />
                 {locations.map(location => {
                     const trainingsOnLocation = trainings.filter(training => training.Location.id === location.id)
                     return !!trainingsOnLocation.length && (
@@ -90,11 +71,12 @@ class Schedule extends Component {
     }
 
     componentDidUpdate = (prevProps) => {
-        const { gymId, match: { params: { range, value } } } = this.props
-        if (prevProps.gymId !== gymId) {
-            this.fetchTrainings()
-        }
-        if (prevProps.match.params.range !== range || prevProps.match.params.value !== value) {
+        const { gymId, range, from, to } = this.props
+        if (prevProps.gymId !== gymId
+            || prevProps.range !== range
+            || prevProps.from !== from
+            || prevProps.to !== to
+        ) {
             this.fetchTrainings()
         }
     }
@@ -104,7 +86,7 @@ class Schedule extends Component {
     }
 
     render() {
-        const { match: { params: { range = 'week', value = moment().isoWeek() } } } = this.props
+        const { range } = this.props
         let schedule
         switch (range) {
             case 'month':
@@ -121,7 +103,7 @@ class Schedule extends Component {
         return (
             <Fragment>
                 {schedule}
-                <BottomBar range={range} value={value} />
+                <BottomBar />
             </Fragment>
         )
     }
@@ -130,6 +112,9 @@ class Schedule extends Component {
 const mapStateToProps = state => ({
     gymId: state.selection.gymId,
     trainings: state.data.trainings,
+    range: state.schedule.range,
+    from: state.schedule.from,
+    to: state.schedule.to,
 })
   
 const mapDispatchToProps = {

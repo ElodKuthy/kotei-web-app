@@ -28,7 +28,6 @@ function App() {
             <Switch>
               <PrivateRoute exact path="/" component={Empty} />
               <PrivateRoute exact path="/profile" component={MyProfile} />
-              <PrivateRoute path="/schedule/:range/:value" component={Schedule} />
               <PrivateRoute path="/schedule" component={Schedule} />
               <Route exact path="/login" component={Login} />
               <Route render={() => (<div>404</div>)} />

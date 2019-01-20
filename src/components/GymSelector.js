@@ -68,11 +68,11 @@ class GymSelector extends Component {
                 anchorEl={this.gymSelectorButton.current}
                 anchorOrigin={{
                     vertical: 'top',
-                    horizontal: 'right',
+                    horizontal: 'center',
                 }}
                 transformOrigin={{
                     vertical: 'top',
-                    horizontal: 'right',
+                    horizontal: 'center',
                 }}
                 open={open}
                 onClose={this.toggleGymSelectorMenu}

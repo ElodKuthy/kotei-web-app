@@ -11,8 +11,8 @@ import ChevronLeft from '@material-ui/icons/ChevronLeft'
 import Today from '@material-ui/icons/Today'
 import ChevronRight from '@material-ui/icons/ChevronRight'
 import Tooltip from '@material-ui/core/Tooltip'
-import Link from 'react-router-dom/Link'
-import moment from 'moment'
+import BottomBarFilter from './BottomBarFilter'
+import { previousScheduleDate, nextScheduleDate, resetScheduleDate } from '../actions'
 
 const styles = theme => ({
     appBar: {
@@ -31,9 +31,6 @@ const styles = theme => ({
     grow: {
         flexGrow: 1,
     },
-    link: {
-        color: 'inherit',
-    }
 })
 
 const previousTooltips = {
@@ -57,39 +54,27 @@ const nextTooltips = {
 class BottomBar extends Component {
 
     render() {
-        const { t, classes, admin, coach, range, value } = this.props
-        const now = moment()
-        const todayValues = {
-            day: now.dayOfYear(),
-            week: now.isoWeek(),
-            month: now.month(),
-        }
+        const { t, classes, admin, coach, range, previousScheduleDate, nextScheduleDate, resetScheduleDate } = this.props
 
         return (
             <AppBar position="fixed" color="primary" className={classNames(classes.appBar, { [classes.withDrawer]: coach || admin })}>
                 <Toolbar className={classes.toolbar}>
-
+                    <BottomBarFilter />
                     <div className={classes.grow} />
                     <Tooltip title={t(previousTooltips[range])}>
-                        <Link className={classes.link} to={`/schedule/${range}/${parseInt(value, 10) - 1}`}>
-                            <IconButton color="inherit">
-                                <ChevronLeft />
-                            </IconButton>
-                        </Link>
+                        <IconButton color="inherit" onClick={() => previousScheduleDate()}>
+                            <ChevronLeft />
+                        </IconButton>
                     </Tooltip>
                     <Tooltip title={t(todayTooltips[range])}>
-                        <Link className={classes.link} to={`/schedule/${range}/${todayValues[range]}`}>
-                            <IconButton color="inherit">
+                            <IconButton color="inherit" onClick={() => resetScheduleDate()}>
                                 <Today />
                             </IconButton>
-                        </Link>
                     </Tooltip>
                     <Tooltip title={t(nextTooltips[range])}>
-                        <Link className={classes.link} to={`/schedule/${range}/${parseInt(value, 10) + 1}`}>
-                            <IconButton color="inherit">
-                                <ChevronRight />
-                            </IconButton>
-                        </Link>
+                        <IconButton color="inherit" onClick={() => nextScheduleDate()}>
+                            <ChevronRight />
+                        </IconButton>
                     </Tooltip>
                 </Toolbar>
             </AppBar>
@@ -100,10 +85,13 @@ class BottomBar extends Component {
 const mapStateToProps = state => ({
     coach: state.selection.coach,
     admin: state.selection.admin,
+    range: state.schedule.range,
 })
   
 const mapDispatchToProps = {
-
+    previousScheduleDate,
+    nextScheduleDate,
+    resetScheduleDate,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withNamespaces()(BottomBar)))

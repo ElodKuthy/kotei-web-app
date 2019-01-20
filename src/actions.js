@@ -10,6 +10,8 @@ const actions = {
     CHANGE_SELECTED_GYM: 'CHANGE_SELECTED_GYM',
     TRAININGS_REQUESTED: 'TRAININGS_REQUESTED',
     TRAININGS_LOADED: 'TRAININGS_LOADED',
+    SCHEDULE_RANGE_CHANGED: 'SCHEDULE_RANGE_CHANGED',
+    SCHEDULE_DATE_CHANGED:'SCHEDULE_DATE_CHANGED',
 }
 
 export default actions
@@ -51,5 +53,37 @@ export function fetchTrainings(gymId, from, to) {
     return {
         type: actions.TRAININGS_REQUESTED,
         payload: { gymId, from, to }
+    }
+}
+
+export function changeScheduleRange(range) {
+    return {
+        type: actions.SCHEDULE_RANGE_CHANGED,
+        payload: { range }
+    }
+}
+
+export function previousScheduleDate() {
+    return {
+        type: actions.SCHEDULE_DATE_CHANGED,
+        payload: { 
+            step: -1,
+        }
+    }
+}
+
+export function nextScheduleDate() {
+    return {
+        type: actions.SCHEDULE_DATE_CHANGED,
+        payload: { 
+            step: +1,
+        }
+    }
+}
+
+export function resetScheduleDate() {
+    return {
+        type: actions.SCHEDULE_DATE_CHANGED,
+        payload: {}
     }
 }
